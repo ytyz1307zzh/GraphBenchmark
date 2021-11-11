@@ -54,7 +54,7 @@ g = read_edgelist(filename, delimiter="\t", nodetype=int,
 #           globals=globals(), n=n)
 
 start_time = datetime.now()
-shortest_path_length(g, {nodeid})
+shortest_path_length(g, nodeid)
 end_time = datetime.now()
 time_delta = end_time - start_time
 print(f'Execute time: {time_delta.seconds + time_delta.microseconds / 1e6}s')
