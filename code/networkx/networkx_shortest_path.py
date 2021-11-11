@@ -15,9 +15,9 @@ graph_name = filename.split('/')[-1].split('.')[0]
 alg_name = '_'.join(script_name.split('/')[-1].split('.')[0].split('_')[1:])
 
 if "pokec" in filename:
-    nodeid = '1'
+    nodeid = 1
 else:
-    nodeid = '0'
+    nodeid = 0
 
 if not os.path.exists(f'output/{package_name}/{graph_name}/{alg_name}'):
     os.makedirs(f'output/{package_name}/{graph_name}/{alg_name}')
