@@ -9,7 +9,7 @@ import subprocess
 
 script_name = sys.argv[0]
 filename = sys.argv[1]
-n = int(sys.argv[2])
+# n = int(sys.argv[2])
 package_name = script_name.split('/')[-1].split('_')[0]
 graph_name = filename.split('/')[-1].split('.')[0]
 alg_name = '_'.join(script_name.split('/')[-1].split('.')[0].split('_')[1:])
