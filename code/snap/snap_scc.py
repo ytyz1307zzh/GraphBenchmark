@@ -1,4 +1,4 @@
-from igraph import *
+import snap
 import sys
 import os
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -39,14 +39,16 @@ p_watch = subprocess.Popen(watch_cmd, shell=True)
 
 print(f"Profiling dataset {filename}")
 
-print("Start loading")
+print("Start strongly connected components")
 print("=================")
 print()
 
-# benchmark("Graph.Read(filename, format='edges')", globals=globals(), n=n)
+g = snap.LoadEdgeListStr(snap.PNGraph, filename, 0, 1)
+Components = snap.TCnComV()
+# benchmark("snap.GetSccs(g, Components)", globals=globals(), n=n)
 
 start_time = datetime.now()
-g = Graph.Read(filename, format='edges')
+snap.GetSccs(g, Components)
 end_time = datetime.now()
 time_delta = end_time - start_time
 print(f'Execute time: {time_delta.seconds + time_delta.microseconds / 1e6}s')

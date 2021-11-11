@@ -1,4 +1,4 @@
-from igraph import *
+import snap
 import sys
 import os
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -39,14 +39,16 @@ p_watch = subprocess.Popen(watch_cmd, shell=True)
 
 print(f"Profiling dataset {filename}")
 
-print("Start loading")
+print("Start k-core")
 print("=================")
 print()
 
-# benchmark("Graph.Read(filename, format='edges')", globals=globals(), n=n)
+g = snap.LoadEdgeListStr(snap.PNGraph, filename, 0, 1)
+CoreIDSzV = snap.TIntPrV()
+# benchmark("snap.GetKCoreNodes(g, CoreIDSzV)", globals=globals(), n=n)
 
 start_time = datetime.now()
-g = Graph.Read(filename, format='edges')
+snap.GetKCoreNodes(g, CoreIDSzV)
 end_time = datetime.now()
 time_delta = end_time - start_time
 print(f'Execute time: {time_delta.seconds + time_delta.microseconds / 1e6}s')

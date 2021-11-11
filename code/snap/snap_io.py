@@ -1,4 +1,4 @@
-from igraph import *
+import snap
 import sys
 import os
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -43,10 +43,11 @@ print("Start loading")
 print("=================")
 print()
 
-# benchmark("Graph.Read(filename, format='edges')", globals=globals(), n=n)
+# benchmark("snap.LoadEdgeListStr(snap.PNGraph, filename, 0, 1)",
+#           globals=globals(), n=n)
 
 start_time = datetime.now()
-g = Graph.Read(filename, format='edges')
+g = snap.LoadEdgeListStr(snap.PNGraph, filename, 0, 1)
 end_time = datetime.now()
 time_delta = end_time - start_time
 print(f'Execute time: {time_delta.seconds + time_delta.microseconds / 1e6}s')
