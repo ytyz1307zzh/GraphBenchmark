@@ -48,15 +48,17 @@ p_watch = subprocess.Popen(watch_cmd, shell=True)
 print(f"Profiling dataset {filename}")
 print(f"using {nk.getMaxNumberOfThreads()} threads")
 
-print("Start loading")
+print("Start k-core")
 print("=================")
 print()
 
-# benchmark("nk.graphio.EdgeListReader(separator='\t', firstNode=0, continuous=True, directed =True).read(filename)", globals=globals(), n=n)
-
-start_time = datetime.now()
 g = nk.graphio.EdgeListReader(
     separator="\t", firstNode=nodeid, continuous=True, directed=True).read(filename)
+# benchmark("nk.centrality.CoreDecomposition(g).run().scores()",
+#           globals=globals(), n=n)
+
+start_time = datetime.now()
+nk.centrality.CoreDecomposition(g).run().scores()
 end_time = datetime.now()
 time_delta = end_time - start_time
 print(f'Execute time: {time_delta.seconds + time_delta.microseconds / 1e6}s')
