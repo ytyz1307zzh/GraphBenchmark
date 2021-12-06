@@ -43,14 +43,14 @@ print("Start time in UTC: ", mon_start)
 watch_outf = f"output/{package_name}/{graph_name}/{alg_name}/ps.txt"
 if os.path.exists(watch_outf):
     os.remove(watch_outf)
-watch_cmd = "watch -n 0.1 'ps -aux | awk \"{if (\$2==%d) print \$0}\" >> %s' > /dev/null" % (pid, watch_outf)
+watch_cmd = "watch -n 0.1 \'ps -aux | awk \"{if (\$2==%d) print \$0}\" >> %s\' > /dev/null" % (pid, watch_outf)
+print("Executing command: ", watch_cmd)
 p_watch = subprocess.Popen(watch_cmd, shell=True)
 
 print(f"Profiling dataset {filename}")
 
 print("Start shortest path")
 print("=================")
-print()
 
 g = read_edgelist(filename, delimiter="\t", nodetype=int,
                   create_using=nx.DiGraph())
