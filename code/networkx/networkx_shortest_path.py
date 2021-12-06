@@ -74,14 +74,11 @@ mon_end = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
 print("End time in UTC: ", mon_end)
 
 # plot the curve of cpu and rss usage
-cpu_draw_cmd = f"procpath plot -d ff.sqlite -q cpu -f output/{package_name}/{graph_name}/{alg_name}/cpu.svg " \
-               f"-p {pid} -a {mon_start} -b {mon_end}"
-rss_draw_cmd = f"procpath plot -d ff.sqlite -q rss -f output/{package_name}/{graph_name}/{alg_name}/rss.svg " \
-               f"-p {pid} -a {mon_start} -b {mon_end}"
-print("Executing command: ", cpu_draw_cmd)
-os.system(cpu_draw_cmd)
-print("Executing command: ", rss_draw_cmd)
-os.system(rss_draw_cmd)
+draw_cmd = f"procpath plot -d ff.sqlite -q cpu -q rss " \
+           f"-f output/{package_name}/{graph_name}/{alg_name}/cpu_rss.svg " \
+           f"-p {pid} -a {mon_start} -b {mon_end}"
+print("Executing command: ", draw_cmd)
+os.system(draw_cmd)
 
 # find the peak memory usage
 peak_cmd = f"grep VmPeak /proc/{pid}/status"

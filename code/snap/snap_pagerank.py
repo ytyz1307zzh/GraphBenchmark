@@ -58,11 +58,6 @@ end_time = datetime.now()
 time_delta = end_time - start_time
 print(f'Execute time: {time_delta.seconds + time_delta.microseconds / 1e6}s')
 
-# find the peak memory usage
-peak_cmd = f"grep VmPeak /proc/{pid}/status"
-print("Executing command: ", peak_cmd)
-os.system(peak_cmd)
-
 # stop the monitor process
 p_procpath.kill()
 pkill_cmd = f"pkill -f \"watch -n 0.1 ps -aux \| awk .*\" -u {uid}"
@@ -74,14 +69,16 @@ mon_end = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
 print("End time in UTC: ", mon_end)
 
 # plot the curve of cpu and rss usage
-cpu_draw_cmd = f"procpath plot -d ff.sqlite -q cpu -f output/{package_name}/{graph_name}/{alg_name}/cpu.svg " \
-               f"-p {pid} -a {mon_start} -b {mon_end}"
-rss_draw_cmd = f"procpath plot -d ff.sqlite -q rss -f output/{package_name}/{graph_name}/{alg_name}/rss.svg " \
-               f"-p {pid} -a {mon_start} -b {mon_end}"
-print("Executing command: ", cpu_draw_cmd)
-os.system(cpu_draw_cmd)
-print("Executing command: ", rss_draw_cmd)
-os.system(rss_draw_cmd)
+draw_cmd = f"procpath plot -d ff.sqlite -q cpu -q rss " \
+           f"-f output/{package_name}/{graph_name}/{alg_name}/cpu_rss.svg " \
+           f"-p {pid} -a {mon_start} -b {mon_end}"
+print("Executing command: ", draw_cmd)
+os.system(draw_cmd)
+
+# find the peak memory usage
+peak_cmd = f"grep VmPeak /proc/{pid}/status"
+print("Executing command: ", peak_cmd)
+os.system(peak_cmd)
 
 # TODO: post-process the "watch" data
 
