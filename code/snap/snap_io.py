@@ -52,6 +52,11 @@ end_time = datetime.now()
 time_delta = end_time - start_time
 print(f'Execute time: {time_delta.seconds + time_delta.microseconds / 1e6}s')
 
+# find the peak memory usage
+peak_cmd = f"grep VmPeak /proc/{pid}/status"
+print("Executing command: ", peak_cmd)
+os.system(peak_cmd)
+
 # stop the monitor process
 p_procpath.kill()
 p_watch.kill()
@@ -69,11 +74,6 @@ print("Executing command: ", cpu_draw_cmd)
 os.system(cpu_draw_cmd)
 print("Executing command: ", rss_draw_cmd)
 os.system(rss_draw_cmd)
-
-# find the peak memory usage
-peak_cmd = f"grep VmPeak /proc/{pid}/status"
-print("Executing command: ", peak_cmd)
-os.system(peak_cmd)
 
 # TODO: post-process the "watch" data
 
