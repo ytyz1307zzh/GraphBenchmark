@@ -6,12 +6,17 @@ import os
 from datetime import datetime
 import subprocess
 
-# set the number of threads
-nk.engineering.setNumberOfThreads(16)
 
 script_name = sys.argv[0]
 filename = sys.argv[1]
-# n = int(sys.argv[2])
+if len(sys.argv) == 3:
+    num_threads = int(sys.argv[2])
+else:
+    num_threads = 1
+
+# set the number of threads
+nk.engineering.setNumberOfThreads(num_threads)
+
 package_name = script_name.split('/')[-1].split('_')[0]
 graph_name = filename.split('/')[-1].split('.')[0]
 alg_name = '_'.join(script_name.split('/')[-1].split('.')[0].split('_')[1:])
