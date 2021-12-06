@@ -59,7 +59,9 @@ print("=================")
 
 # stop the monitor process
 p_procpath.kill()
-p_watch.kill()
+pkill_cmd = f"pkill -f \"watch -n 0.1 ps -aux \| awk .*\" -u {uid}"
+print("Executing command: ", pkill_cmd)
+os.system(pkill_cmd)
 
 # store the time after running the algorithm
 mon_end = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")

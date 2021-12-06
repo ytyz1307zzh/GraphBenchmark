@@ -34,6 +34,10 @@ if not os.path.exists(f'output/{package_name}/{graph_name}/{alg_name}'):
 pid = os.getpid()
 print("Process pid: ", pid)
 
+# get the uid of the current user
+uid = os.getuid()
+print("User id: ", uid)
+
 # start a procpath subprocess to monitor the cpu and rss of a process
 procpath_cmd = f"procpath record -i 0.1 -d ff.sqlite '$..children[?(@.stat.pid == {pid})]'"
 print("Executing command: ", procpath_cmd)
@@ -47,7 +51,8 @@ print("Start time in UTC: ", mon_start)
 watch_outf = f"output/{package_name}/{graph_name}/{alg_name}/ps.txt"
 if os.path.exists(watch_outf):
     os.remove(watch_outf)
-watch_cmd = "watch -n 0.1 'ps -aux | awk \"{if (\$2==%d) print \$0}\" >> %s' > /dev/null" % (pid, watch_outf)
+watch_cmd = "watch -n 0.1 \'ps -aux | awk \"{if (\$2==%d) print \$0}\" >> %s\' > /dev/null" % (pid, watch_outf)
+print("Executing command: ", watch_cmd)
 p_watch = subprocess.Popen(watch_cmd, shell=True)
 
 print(f"Profiling dataset {filename}")
@@ -55,7 +60,6 @@ print(f"using {nk.getMaxNumberOfThreads()} threads")
 
 print("Start loading")
 print("=================")
-print()
 
 # benchmark("nk.graphio.EdgeListReader(separator='\t', firstNode=0, continuous=True, directed =True).read(filename)", globals=globals(), n=n)
 
@@ -68,7 +72,9 @@ print(f'Execute time: {time_delta.seconds + time_delta.microseconds / 1e6}s')
 
 # stop the monitor process
 p_procpath.kill()
-p_watch.kill()
+pkill_cmd = f"pkill -f \"watch -n 0.1 ps -aux \| awk .*\" -u {uid}"
+print("Executing command: ", pkill_cmd)
+os.system(pkill_cmd)
 
 # store the time after running the algorithm
 mon_end = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
