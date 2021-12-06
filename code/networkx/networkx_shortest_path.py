@@ -31,7 +31,7 @@ uid = os.getuid()
 print("User id: ", uid)
 
 # start a procpath subprocess to monitor the cpu and rss of a process
-procpath_cmd = f"procpath record -i 0.1 -d ff.sqlite '$..children[?(@.stat.pid == {pid})]'"
+procpath_cmd = f"procpath record -i 0.01 -d ff.sqlite '$..children[?(@.stat.pid == {pid})]'"
 print("Executing command: ", procpath_cmd)
 p_procpath = subprocess.Popen(procpath_cmd, shell=True)
 
