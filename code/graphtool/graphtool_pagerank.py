@@ -6,12 +6,17 @@ import os
 from datetime import datetime
 import subprocess
 
-# number of threads
-openmp_set_num_threads(1)
 
 script_name = sys.argv[0]
 filename = sys.argv[1]
-# n = int(sys.argv[2])
+if len(sys.argv) == 3:
+    num_threads = int(sys.argv[2])
+else:
+    num_threads = 1
+
+# number of threads
+openmp_set_num_threads(num_threads)
+
 package_name = script_name.split('/')[-1].split('_')[0]
 graph_name = filename.split('/')[-1].split('.')[0]
 alg_name = '_'.join(script_name.split('/')[-1].split('.')[0].split('_')[1:])
