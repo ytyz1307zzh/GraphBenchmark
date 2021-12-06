@@ -28,6 +28,10 @@ if not os.path.exists(f'output/{package_name}/{graph_name}/{alg_name}'):
 pid = os.getpid()
 print("Process pid: ", pid)
 
+# get the uid of the current user
+uid = os.getuid()
+print("User id: ", uid)
+
 # start a procpath subprocess to monitor the cpu and rss of a process
 procpath_cmd = f"procpath record -i 0.1 -d ff.sqlite '$..children[?(@.stat.pid == {pid})]'"
 print("Executing command: ", procpath_cmd)
