@@ -11,11 +11,12 @@ parser.add_argument('-input', required=True, help='path to input file')
 parser.add_argument('-max_node', required=True, type=int, help='The number of nodes to keep')
 parser.add_argument('-output', required=True, help='path to output file')
 opt = parser.parse_args()
+print(opt)
 
 edge_cnt = 0
 node_set = set()
 
-with open(opt.intput, 'r', encoding='utf8') as fin:
+with open(opt.input, 'r', encoding='utf8') as fin:
     with open(opt.output, 'w', encoding='utf8') as fout:
 
         for line in tqdm(fin.readlines()):
