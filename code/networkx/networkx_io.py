@@ -5,6 +5,7 @@ import os
 # from benchmark import benchmark
 from datetime import datetime
 import subprocess
+import matplotlib.pyplot as plt
 
 
 script_name = sys.argv[0]
@@ -84,5 +85,27 @@ peak_cmd = f"grep VmPeak /proc/{pid}/status"
 print("Executing command: ", peak_cmd)
 os.system(peak_cmd)
 
-# TODO: post-process the "watch" data
+# parse the "watch" data
+cpu_trend, vm_trend = [], []
+with open(watch_outf, 'r', encoding='utf8') as fin:
+    for line in fin:
+        if not line:
+            continue
+        fields = line.strip().split()
+        cpu_trend.append(float(fields[2]))
+        vm_trend.append(round(int(fields[4]) / 1000, 1))
 
+# plot into one figure with double y axes
+x = [0.1 * ti for ti in range(len(cpu_trend))]
+fig, ax_left = plt.subplots()
+ax_right = ax_left.twinx()
+ax_left.plot(x, cpu_trend, 'g-')
+ax_right.plot(x, vm_trend, 'b-')
+
+ax_left.set_xlabel('Run Time')
+ax_left.set_ylabel('CPU%', color='g')
+ax_right.set_ylabel('VM Size', color='b')
+
+watch_plot_path = f"output/{package_name}/{graph_name}/{alg_name}/watch.png"
+plt.savefig(watch_plot_path, bbox_inches='tight')
+print(f'Watch data saved to {watch_plot_path}')
