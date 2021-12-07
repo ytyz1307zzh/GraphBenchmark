@@ -1,5 +1,7 @@
 #!bin/bash
 
+# WARNING: To run this script, change the python path to your virtual environment
+
 algorithms=(
     "shortest_path"
     "pagerank"
@@ -22,7 +24,7 @@ num_nodes=(
 for n in "${num_nodes[@]}"; do
     for pack in "${packages[@]}"; do
         for alg in "${algorithms[@]}"; do
-            python code/"$pack"/"$pack"_"$alg".py data/amazon_"$n".txt
+            ~/anaconda3/envs/"$pack"/bin/python code/"$pack"/"$pack"_"$alg".py data/amazon_"$n".txt
             echo
         done
     done
